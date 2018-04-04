@@ -21,7 +21,6 @@
 
 @interface OptionSelectorViewController : UITableViewController
 
-@property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSArray *options;
 @property (strong, nonatomic) Option *selectedOption;
 @property (strong, nonatomic) id<OptionSelectorDelegate> delegate;

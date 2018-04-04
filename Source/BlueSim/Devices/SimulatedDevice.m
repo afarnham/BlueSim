@@ -32,14 +32,14 @@
 {
     switch (peripheral.state)
     {
-        case CBPeripheralManagerStatePoweredOn:
+        case CBManagerStatePoweredOn:
         {
             self.peripheralManagerPoweredOn = YES;
             if (self.on)
                 [self startServices];
             break;
         }
-        case CBPeripheralManagerStatePoweredOff:
+        case CBManagerStatePoweredOff:
         {
             self.peripheralManagerPoweredOn = NO;
             

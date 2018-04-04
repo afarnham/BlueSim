@@ -178,11 +178,11 @@ enum ThermometerFlags
 {
     // Get the current time
     NSDate *currentTime = [NSDate date];
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *time = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit |
-                                                    NSWeekdayCalendarUnit | NSDayCalendarUnit |
-                                                    NSHourCalendarUnit | NSMinuteCalendarUnit |
-                                                    NSSecondCalendarUnit)
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *time = [gregorian components:(NSCalendarUnitYear | NSCalendarUnitMonth |
+                                                    NSCalendarUnitWeekday | NSCalendarUnitDay |
+                                                    NSCalendarUnitHour | NSCalendarUnitMinute |
+                                                    NSCalendarUnitSecond)
                                           fromDate:currentTime];
     
     UInt16 year = time.year;

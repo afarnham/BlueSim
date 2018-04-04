@@ -85,37 +85,56 @@
 
 - (void)showSendNotificationActionSheet
 {
-	UIActionSheet *actionSheet =
-        [[UIActionSheet alloc] initWithTitle:@"Send Notification"
-                                    delegate:self
-                           cancelButtonTitle:@"Cancel"
-                      destructiveButtonTitle:nil
-                           otherButtonTitles:@"Manual Time Update", @"External Time Update", @"Timezone Change", @"DST Change", nil];
+    UIAlertController *actionSheet = [UIAlertController
+                                      alertControllerWithTitle:@"Send Notification"
+                                      message:nil
+                                      preferredStyle:UIAlertControllerStyleActionSheet];
     
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showInView:self.view];
-}
+    UIAlertAction *cancel = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleCancel
+                             handler:^(UIAlertAction * _Nonnull action) {}];
+    [actionSheet addAction:cancel];
 
+    __weak typeof(self) weakSelf = self;
+    UIAlertAction *manualTime = [UIAlertAction
+                             actionWithTitle:@"Manual Time Update"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * _Nonnull action) {
+                                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                                 [strongSelf.timeDevice sendManualTimeUpdate];
+                             }];
+    [actionSheet addAction:manualTime];
 
+    UIAlertAction *externalTime = [UIAlertAction
+                             actionWithTitle:@"External Time Update"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * _Nonnull action) {
+                                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                                 [strongSelf.timeDevice sendExternalReferenceTimeUpdate];
+                             }];
+    [actionSheet addAction:externalTime];
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch(buttonIndex)
-    {
-        case 0:
-            [self.timeDevice sendManualTimeUpdate];
-            break;
-        case 1:
-            [self.timeDevice sendExternalReferenceTimeUpdate];
-            break;
-        case 2:
-            [self.timeDevice sendTimezoneChangeUpdate];
-            break;
-        case 3:
-            [self.timeDevice sendDSTChangeUpdate];
-            break;
-    }
-    // TODO: deselect the cell
+    UIAlertAction *tzChange = [UIAlertAction
+                             actionWithTitle:@"Timezone Change"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * _Nonnull action) {
+                                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                                 [strongSelf.timeDevice sendTimezoneChangeUpdate];
+                             }];
+    [actionSheet addAction:tzChange];
+
+    UIAlertAction *dstChange = [UIAlertAction
+                             actionWithTitle:@"DST Change"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * _Nonnull action) {
+                                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                                [strongSelf.timeDevice sendDSTChangeUpdate];
+                             }];
+    [actionSheet addAction:dstChange];
+
+    
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 @end
